@@ -1,14 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
-#include <ctime>
-#include <cstdlib>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
+#include "GameState.h"
+
 
 class Game
 {
@@ -20,8 +14,11 @@ private:
 	sf::Clock dtClock;
 	float dt;
 
+	std::stack<State*> states;
+
 	// Initialization
 	void initWinwow();
+	void initStates();
 
 public:
 	// Constructors/Destructors
@@ -29,10 +26,19 @@ public:
 	virtual ~Game();
 
 	//Functions
+
+	//Regular
+	void endApplication();
+
+	//Update
 	void updateDT();
 	void updateSFMLEvents();
 	void update();
+
+	//Render
 	void render();
+
+	//Core
 	void run();
 };
 
