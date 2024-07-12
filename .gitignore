@@ -7,21 +7,39 @@
 *.VC.opendb
 *.pdb
 
-# Build directories
+# Игнорирование всех бинарных файлов SFML
+*.lib
+*.dll
+*.so
+*.dylib
+*.a
+
+# Игнорирование каталога с библиотеками
+lib/
+lib64/
+
+# Игнорирование временных и сборочных файлов Visual Studio
+*.obj
+*.pdb
+*.exe
+*.log
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+ipch/
+obj/
 Debug/
 Release/
 x64/
 x86/
-bin/
-obj/
 
-# SFML specific
-lib/
-lib64/
-extlibs/
-
-# CMake
+# Игнорирование файлов CMake
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+
+# Игнорирование системных файлов
+.DS_Store
+Thumbs.db
