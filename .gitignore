@@ -1,0 +1,27 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+*.pdb
+
+# Build directories
+Debug/
+Release/
+x64/
+x86/
+bin/
+obj/
+
+# SFML specific
+lib/
+lib64/
+extlibs/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
