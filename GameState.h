@@ -12,7 +12,7 @@ private:
 	void initKeybinds();
 
 public:
-	GameState(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys);
+	GameState(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
 	virtual ~GameState();
 
 	//Functions
