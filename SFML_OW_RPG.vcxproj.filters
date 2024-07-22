@@ -51,6 +51,9 @@
     <ClCompile Include="MovementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="openal32.dll" />
@@ -88,6 +91,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
