@@ -1,16 +1,14 @@
-#ifndef MAINMENUSTATE_H
-#define MAINMENUSTATE_H
+#ifndef EDITORSTATE_H
+#define EDITORSTATE_H
 
-#include "GameState.h"
-#include "EditorState.h"
+#include "State.h"
 #include "Button.h"
 
-class MainMenuState : public State
+class EditorState :
+    public State
 {
 private:
 	// Variables
-	sf::Texture backgroundTexture;
-	sf::RectangleShape background;
 	sf::Font font;
 
 	// Objects
@@ -26,8 +24,8 @@ private:
 	void supportMousePosition(bool status, sf::RenderTarget* target);
 
 public:
-	MainMenuState(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
-	virtual ~MainMenuState();
+	EditorState(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	virtual ~EditorState();
 
 	//Functions
 	void updateInput(const float& dt);
@@ -36,5 +34,5 @@ public:
 	void renderButtons(sf::RenderTarget& target);
 	void render(sf::RenderTarget* target = NULL);
 };
-#endif //MAINMENUSTATE_H
 
+#endif // !EDITORSTATE_H
