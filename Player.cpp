@@ -38,32 +38,60 @@ Player::~Player()
 void Player::update(const float& dt)
 {
 	this->movementComponent->update(dt);
+	this->updateAttack();
+	this->updateAnimation(dt);
+	this->hitboxComponent->update();
+}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		this->attacking = true;
-	}
-
+void Player::updateAnimation(const float& dt)
+{
 	if (this->attacking)
 	{
-		if(this->animationComponent->play("ATTACK", dt, true))
+		//Set origin depending on direction
+		if (this->sprite.getScale().x > 0.f) //Facing left
+		{
+			this->sprite.setOrigin(0.f, 0.f);
+		}
+		else //Facing right
+		{
+			this->sprite.setOrigin(129.f, 0.f);
+		}
+		//Animate and check for animation end
+		if (this->animationComponent->play("ATTACK", dt, true))
+		{
 			this->attacking = false;
+
+			if (this->sprite.getScale().x > 0.f) //Facing left
+			{
+				this->sprite.setOrigin(0.f, 0.f);
+			}
+			else //Facing right
+			{
+				this->sprite.setOrigin(129.f, 0.f);
+			}
+		}
 	}
 
 	if (this->movementComponent->getState(IDLE))
 	{
 		this->animationComponent->play("IDLE", dt);
 	}
-	else if(this->movementComponent->getState(MOVING_LEFT))
+	else if (this->movementComponent->getState(MOVING_LEFT))
 	{
-		this->sprite.setOrigin(129.f, 0.f);
-		this->sprite.setScale(-1.f, 1.f);
+		if (this->sprite.getScale().x > 0.f)
+		{
+			this->sprite.setOrigin(129.f, 0.f);
+			this->sprite.setScale(-1.f, 1.f);
+		}
 		this->animationComponent->play("WALK", dt, this->movementComponent->getVelocity().x, this->movementComponent->getMaxVelocity());
 	}
 	else if (this->movementComponent->getState(MOVING_RIGHT))
 	{
-		this->sprite.setOrigin(0.f, 0.f);
-		this->sprite.setScale(1.f, 1.f);
+		if (this->sprite.getScale().x < 0.f)
+		{
+			this->sprite.setOrigin(0.f, 0.f);
+			this->sprite.setScale(1.f, 1.f);
+		}
 		this->animationComponent->play("WALK", dt, this->movementComponent->getVelocity().x, this->movementComponent->getMaxVelocity());
 	}
 	else if (this->movementComponent->getState(MOVING_UP))
@@ -74,6 +102,12 @@ void Player::update(const float& dt)
 	{
 		this->animationComponent->play("WALK", dt, this->movementComponent->getVelocity().y, this->movementComponent->getMaxVelocity());
 	}
+}
 
-	this->hitboxComponent->update();
+void Player::updateAttack()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		this->attacking = true;
+	}
 }

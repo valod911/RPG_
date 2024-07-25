@@ -41,6 +41,7 @@ private:
 			this->sprite.setTexture(this->textureSheet, true);
 			this->sprite.setTextureRect(this->startRect);
 		}
+
 		//Accessor
 		const bool& isDone() const
 		{
