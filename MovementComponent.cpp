@@ -17,6 +17,11 @@ const sf::Vector2f& MovementComponent::getVelocity() const
 	return this->velocity;
 }
 
+const float& MovementComponent::getMaxVelocity() const
+{
+	return this->maxVelocity;
+}
+
 //Functions
 
 const bool MovementComponent::getState(const short unsigned state) const

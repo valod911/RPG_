@@ -7,6 +7,7 @@ class Player : public Entity
 {
 private:
 	//Variables
+	bool attacking;
 
 	//Initialization functions
 	void initVariables();
