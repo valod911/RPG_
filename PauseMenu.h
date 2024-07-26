@@ -20,22 +20,30 @@
 class PauseMenu
 {
 private:
-	//fullscrean background 
-	// buttons
-	// map with buttons
+	sf::Font& font;
+	sf::Text menuText;
+
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 
 	std::map<std::string, Button*> buttons;
 
+	//Private functions
+
+
 
 public:
-	PauseMenu(sf::RenderWindow& window);
+	PauseMenu(sf::RenderWindow& window, sf::Font& font);
 	virtual ~PauseMenu();
 
+	//Accessors
+	std::map<std::string, Button*>& getButtons();
+
 	//Funcions
-	void update();
+	void update(const sf::Vector2f& mousePos);
 	void render(sf::RenderTarget& target);
+	void addButton(const std::string key, float y, const std::string text);
+	const bool isButtonPressed(const std::string key);
 };
 
 #endif

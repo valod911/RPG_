@@ -1,12 +1,10 @@
-#ifndef MAINMENUSTATE_H
-#define MAINMENUSTATE_H
+#ifndef SETTINGSSTATE_H
+#define SETTINGSSTATE_H
 
-#include "GameState.h"
-#include "EditorState.h"
+#include "State.h"
 #include "Button.h"
-#include "SettingsState.h"
 
-class MainMenuState : public State
+class SettingsState : public State
 {
 private:
 	// Variables
@@ -24,11 +22,11 @@ private:
 	void initKeybinds();
 	void initButtons();
 
-	void supportMousePosition(bool status, sf::RenderTarget* target);
-
 public:
-	MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
-	virtual ~MainMenuState();
+	SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	virtual ~SettingsState();
+
+	//Accessors
 
 	//Functions
 	void updateInput(const float& dt);
@@ -37,5 +35,5 @@ public:
 	void renderButtons(sf::RenderTarget& target);
 	void render(sf::RenderTarget* target = NULL);
 };
-#endif //MAINMENUSTATE_H
 
+#endif

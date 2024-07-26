@@ -7,6 +7,8 @@ State::State(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys
 	this->states = states;
 	this->quit = false;
 	this->paused = false;
+	this->keytime = 0.f;
+	this->keyTimeMax = 10.f;
 }
 
 State::~State()
@@ -16,6 +18,16 @@ State::~State()
 const bool& State::getQuit() const
 {
 	return this->quit;
+}
+
+const bool State::getKeytime()
+{
+	if (this->keytime >= this->keyTimeMax)
+	{
+		this->keytime = 0.f;
+		return true;
+	}
+	return false;
 }
 
 //void State::checkForQuit()
@@ -39,6 +51,12 @@ void State::pauseState()
 void State::unpauseState()
 {
 	this->paused = false;
+}
+
+void State::updateKeytime(const float& dt)
+{
+	if (this->keytime < this->keyTimeMax)
+		this->keytime += 50.f * dt;
 }
 
 void State::updateMousePosition()

@@ -26,28 +26,63 @@ void GameState::initTextures()
 	
 }
 
+void GameState::initPauseMenu()
+{
+	this->pmenu = new PauseMenu(*this->window, this->font);
+
+	this->pmenu->addButton("QUIT", 200.f, "Quit");
+}
+
 void GameState::initPlayers()
 {
 	this->player = new Player(0, 0, this->textures["PLAYER_SHEET"]);
 }
 
+void GameState::initFonts()
+{
+	if (!this->font.loadFromFile("Font/BankGothic Md BT Medium.otf"))
+	{
+		throw("ERROR::MAIN_MENU_STATE::COULD NOT LOAT FONT");
+	}
+}
+
 //Constructors/Destructors----------------------
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
-	: State(window, supportedKeys, states), pmenu(*window)
+	: State(window, supportedKeys, states)
 {
 	this->initKeybinds();
+	this->initFonts();
 	this->initTextures();
+	this->initPauseMenu();
 	this->initPlayers();
 }
 
 GameState::~GameState()
 {
 	delete this->player;
+	delete this->pmenu;
 }
 
 //Functions--------------------------------------
 
 void GameState::updateInput(const float& dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))) && this->getKeytime())
+	{
+		if (!this->paused)
+			this->pauseState();
+		else
+			this->unpauseState();
+	}
+}
+
+void GameState::updatePauseMenuButtons()
+{
+	if (this->pmenu->isButtonPressed("QUIT"))
+		this->endState();
+}
+
+void GameState::updatePlayerInput(const float& dt)
 {
 	//Update player input
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
@@ -58,28 +93,23 @@ void GameState::updateInput(const float& dt)
 		this->player->move(0.f, -1.f, dt);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
 		this->player->move(0.f, 1.f, dt);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
-	{
-		if (!this->paused)
-			this->pauseState();
-		//else
-			//this->unpauseState();
-	}
-		
 }
 
 void GameState::update(const float& dt)
 {
+	this->updateMousePosition();
+	this->updateKeytime(dt);
+	this->updateInput(dt);
+
 	if (!this->paused)	//Unpause update
 	{
-		this->updateMousePosition();
-		this->updateInput(dt);
+		this->updatePlayerInput(dt);
 		this->player->update(dt);
 	}
 	else //Pause update
 	{
-		this->pmenu.update();
+		this->pmenu->update(this->mousePosView);
+		this->updatePauseMenuButtons();
 	}
 }
 
@@ -92,6 +122,6 @@ void GameState::render(sf::RenderTarget* target)
 
 	if (this->paused)	//Pause menu render
 	{
-		this->pmenu.render(*target);
+		this->pmenu->render(*target);
 	}
 }

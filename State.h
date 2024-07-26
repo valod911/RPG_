@@ -15,6 +15,8 @@ protected:
 	std::map<std::string, int> keybinds;
 	bool quit;
 	bool paused;
+	float keytime;
+	float keyTimeMax;
 
 	sf::Vector2i mousePosScreen;	//current position of the mouse in desktop coordinates.
 	sf::Vector2i mousePosWindow;	//current position of the mouse in window coordinates.
@@ -31,15 +33,21 @@ public:
 	State(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
 	virtual ~State();
 
+	//Accessors
 	const bool& getQuit() const;
-	// if the functions are virtual, then this class is abstract
+	const bool getKeytime();
+
+	//Functions
 	virtual void updateMousePosition();
 	virtual void endState();
 	void pauseState();
 	void unpauseState();
+	virtual void updateKeytime(const float& dt);
+
+	// if the functions are virtual, then this class is abstract
 	virtual void updateInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;
-	virtual void render(sf::RenderTarget* target = nullptr) = 0;
+	virtual void render(sf::RenderTarget* target = nullptr) = 0;	// NULL or nullptr
 };
 
 #endif

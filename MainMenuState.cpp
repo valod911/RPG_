@@ -49,22 +49,22 @@ void MainMenuState::initKeybinds()
 
 void MainMenuState::initButtons()
 {
-	this->buttons["GAME_STATE"] = new Button(100, 250, 150, 50,
+	this->buttons["GAME_STATE"] = new Button(100.f, 250.f, 150.f, 50.f,
 		&this->font, "New Game", 22,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 
-	this->buttons["SETTINGS_STATE"] = new Button(100, 350, 150, 50,
+	this->buttons["SETTINGS_STATE"] = new Button(100.f, 350.f, 150.f, 50.f,
 		&this->font, "Settings", 22,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 
-	this->buttons["EDITOR_STATE"] = new Button(100, 450, 150, 50,
+	this->buttons["EDITOR_STATE"] = new Button(100.f, 450.f, 150.f, 50.f,
 		&this->font, "Editor", 22,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 	
-	this->buttons["EXIT_STATE"] = new Button(100, 550, 150, 50,
+	this->buttons["EXIT_STATE"] = new Button(100.f, 550.f, 150.f, 50.f,
 		&this->font, "Exit", 22,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
@@ -129,6 +129,10 @@ void MainMenuState::updateButtons()
 	}
 
 	//Settings
+	if (this->buttons["SETTINGS_STATE"]->isPressed())
+	{
+		this->states->push(new SettingsState(this->window, this->supportedKeys, this->states));
+	}
 
 	//Editor
 	if (this->buttons["EDITOR_STATE"]->isPressed())
