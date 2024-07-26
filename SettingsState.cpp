@@ -54,7 +54,9 @@ void SettingsState::initButtons()
 		&this->font, "Exit", 22,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
-
+	
+	std::string li[] = { "11111", "22222", "33333", "44444", "55555" };
+	this->ddl = new DropDownList(100, 100, 200, 50, font, li, 5);
 }
 
 //Constructors/Destructors----------------------
@@ -75,6 +77,8 @@ SettingsState::~SettingsState()
 	{
 		delete it->second;
 	}
+
+	delete ddl;
 }
 
 //Accessors--------------------------------------
@@ -98,6 +102,7 @@ void SettingsState::updateButtons()
 	{
 		this->endState();
 	}
+
 }
 
 void SettingsState::update(const float& dt)
@@ -105,6 +110,8 @@ void SettingsState::update(const float& dt)
 	this->updateMousePosition();
 	this->updateInput(dt);
 	this->updateButtons();
+
+	this->ddl->update(this->mousePosView, dt);
 }
 
 void SettingsState::renderButtons(sf::RenderTarget& target)
@@ -122,6 +129,8 @@ void SettingsState::render(sf::RenderTarget* target)
 
 	target->draw(this->background);
 	this->renderButtons(*target);
+
+	this->ddl->render(*target);
 
 	//this->supportMousePosition(false, target);
 

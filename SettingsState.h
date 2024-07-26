@@ -14,6 +14,7 @@ private:
 
 	// Objects
 	std::map<std::string, Button*> buttons;
+	DropDownList* ddl;
 
 	//Functions
 	void initVariables();
