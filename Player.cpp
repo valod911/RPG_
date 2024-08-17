@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Player.h"
 //Initialization functions-----------------------
 void Player::initVariables()
