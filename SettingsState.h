@@ -16,6 +16,10 @@ private:
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, DropDownList*> dropDownLists;
 
+	sf::Text optionsText;
+
+	std::vector<sf::VideoMode> modes;
+
 	//Functions
 	void initVariables();
 	void initBackground();
@@ -23,6 +27,7 @@ private:
 	void initKeybinds();
 	void initGui();
 	void supportMousePosition(bool status, sf::RenderTarget* target);
+	void initText();
 
 public:
 	SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);

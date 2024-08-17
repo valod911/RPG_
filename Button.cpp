@@ -163,6 +163,12 @@ DropDownList::~DropDownList()
 }
 
 //Accessors
+const unsigned short& DropDownList::getActiveElementId() const
+{
+	return this->activeELement->getId();
+}
+
+//Accessors
 const bool DropDownList::getKeytime()
 {
 	if (this->keytime >= this->keytimeMax) 
