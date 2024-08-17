@@ -48,15 +48,45 @@ void SettingsState::initKeybinds()
 	ifs.close();
 }
 
-void SettingsState::initButtons()
+void SettingsState::initGui()
 {
-	this->buttons["EXIT_STATE"] = new Button(100.f, 550.f, 150.f, 50.f,
-		&this->font, "Exit", 22,
+	this->buttons["BACK"] = new Button(
+		450.f, 700.f, 250.f, 50.f,
+		&this->font, "Back", 22,
+		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+
+	this->buttons["APPLY"] = new Button(
+		150.f, 700.f, 250.f, 50.f,
+		&this->font, "Apply", 22,
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 	
-	std::string li[] = { "11111", "22222", "33333", "44444", "55555" };
-	this->ddl = new DropDownList(100, 100, 200, 50, font, li, 5);
+	std::string li[] = { "1920x1080", "800x600", "640x480" };
+	this->dropDownLists["RESOLUTION"] = new DropDownList(400, 275, 200, 50, font, li, 3);
+}
+
+void SettingsState::supportMousePosition(bool status, sf::RenderTarget* target)
+{
+	//Support function for rendering the cursor position on the screen;
+	if (status)
+	{
+		sf::Text mouseText;
+		float x, y;
+		x = this->mousePosView.x;
+		y = this->mousePosView.y;
+		if (y < 50)
+			y = y + 25;
+		else
+			y = y - 50;
+		mouseText.setPosition(x, y);
+		mouseText.setFont(this->font);
+		mouseText.setCharacterSize(12);
+		std::stringstream ss;
+		ss << this->mousePosView.x << "  " << this->mousePosView.y;
+		mouseText.setString(ss.str());
+		target->draw(mouseText);
+	}
 }
 
 //Constructors/Destructors----------------------
@@ -67,7 +97,7 @@ SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int
 	this->initBackground();
 	this->initFonts();
 	this->initKeybinds();
-	this->initButtons();
+	this->initGui();
 }
 
 SettingsState::~SettingsState()
@@ -78,7 +108,12 @@ SettingsState::~SettingsState()
 		delete it->second;
 	}
 
-	delete ddl;
+	auto it2 = this->dropDownLists.begin();
+	for (it2; it2 != this->dropDownLists.end(); ++it2)
+	{
+		delete it2->second;
+	}
+
 }
 
 //Accessors--------------------------------------
@@ -89,19 +124,35 @@ void SettingsState::updateInput(const float& dt)
 
 }
 
-void SettingsState::updateButtons()
+void SettingsState::updateGui(const float& dt)
 {
 	/*Updates all the buttons in the state and handles their functionality*/
+	//Buttons
 	for (auto& it : this->buttons)
 	{
 		it.second->update(this->mousePosView);
 	}
 
+	//Button functionality
 	//Quit the game
-	if (this->buttons["EXIT_STATE"]->isPressed())
+	if (this->buttons["BACK"]->isPressed())
 	{
 		this->endState();
 	}
+
+	//Apply selected settigns
+	if (this->buttons["APPLY"]->isPressed())
+	{
+		
+	}
+
+	//Dropdown lists
+	for (auto& it : this->dropDownLists)
+	{
+		it.second->update(this->mousePosView, dt);
+	}
+
+	//Dropdown lists funcionality
 
 }
 
@@ -109,14 +160,17 @@ void SettingsState::update(const float& dt)
 {
 	this->updateMousePosition();
 	this->updateInput(dt);
-	this->updateButtons();
-
-	this->ddl->update(this->mousePosView, dt);
+	this->updateGui(dt);
 }
 
-void SettingsState::renderButtons(sf::RenderTarget& target)
+void SettingsState::renderGui(sf::RenderTarget& target)
 {
 	for (auto& it : this->buttons)
+	{
+		it.second->render(target);
+	}
+
+	for (auto& it : this->dropDownLists)
 	{
 		it.second->render(target);
 	}
@@ -128,11 +182,9 @@ void SettingsState::render(sf::RenderTarget* target)
 		target = this->window;
 
 	target->draw(this->background);
-	this->renderButtons(*target);
+	this->renderGui(*target);
 
-	this->ddl->render(*target);
-
-	//this->supportMousePosition(false, target);
+	this->supportMousePosition(true, target);
 
 }
 
