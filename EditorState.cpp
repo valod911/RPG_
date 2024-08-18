@@ -41,6 +41,13 @@ void EditorState::initButtons()
 
 }
 
+void EditorState::initPauseMenu()
+{
+	this->pmenu = new PauseMenu(*this->window, this->font);
+
+	this->pmenu->addButton("QUIT", 200.f, "Quit");
+}
+
 void EditorState::supportMousePosition(bool status, sf::RenderTarget* target)
 {
 	//Support function for rendering the cursor position on the screen;
@@ -65,6 +72,7 @@ EditorState::EditorState(sf::RenderWindow* window, std::map<std::string, int>* s
 	this->initBackground();
 	this->initFonts();
 	this->initKeybinds();
+	this->initPauseMenu();
 	this->initButtons();
 }
 
@@ -75,14 +83,21 @@ EditorState::~EditorState()
 	{
 		delete it->second;
 	}
+
+	delete this->pmenu;
 }
 
 // Functions
 
 void EditorState::updateInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
-		this->endState();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))) && this->getKeytime())
+	{
+		if (!this->paused)
+			this->pauseState();
+		else
+			this->unpauseState();
+	}
 }
 
 void EditorState::updateButtons()
@@ -95,10 +110,28 @@ void EditorState::updateButtons()
 
 }
 
+void EditorState::updatePauseMenuButtons()
+{
+	if (this->pmenu->isButtonPressed("QUIT"))
+		this->endState();
+}
+
 void EditorState::update(const float& dt)
 {
 	this->updateMousePosition();
+	this->updateKeytime(dt);
 	this->updateInput(dt);
+
+	if (!this->paused)//Unpaused
+	{
+		this->updateButtons();
+	}
+	else //Paused
+	{
+		this->pmenu->update(this->mousePosView);
+		this->updatePauseMenuButtons();
+	}
+
 	this->updateButtons();
 }
 
@@ -117,6 +150,13 @@ void EditorState::render(sf::RenderTarget* target)
 
 	this->renderButtons(*target);
 
-	this->supportMousePosition(false, target);
+	this->map.render(*target);
+
+	if (this->paused)	//Pause menu render
+	{
+		this->pmenu->render(*target);
+	}
+
+	this->supportMousePosition(true, target);
 
 }
