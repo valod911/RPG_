@@ -84,6 +84,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
+    <ClCompile Include="GraphiscSettings.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="openal32.dll" />
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphiscSettings.h">
+      <Filter>Файлы ресурсов</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

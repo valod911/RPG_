@@ -7,53 +7,29 @@
 void Game::initVariables()
 {
     this->window = NULL;
-    this->fullscreen = false;
     this->dt = 0.0f;
-
 }
 
-void Game::initWinwow()
+void Game::initGraphicsSettings()
 {
-    /*Create a SFML window using options from a window.ini file*/
+    this->gfxSettings.loadFromFile("config/graphics.ini");
+}
 
-    std::ifstream ifs("config/window.ini");
-    this->videoModes = sf::VideoMode::getFullscreenModes();
-
-    std::string title = "None";
-    sf::VideoMode window_bounds = sf::VideoMode::getDesktopMode();
-    bool fullscreen = false;
-    unsigned framerate_limit = 120;
-    bool vertical_sync_enabled = false;
-    unsigned antialiasing_level = 0;
-
-    if (ifs.is_open())
-    {
-        std::getline(ifs, title);
-        ifs >> window_bounds.width >> window_bounds.height;
-        ifs >> fullscreen;
-        ifs >> framerate_limit;
-        ifs >> vertical_sync_enabled;
-        ifs >> antialiasing_level;
-    }
-
-    ifs.close();
-
-    this->fullscreen = fullscreen;
-    windowSettings.antialiasingLevel = antialiasing_level;
-
-    if (this->fullscreen)
-        this->window = new sf::RenderWindow(window_bounds, title, sf::Style::Fullscreen, windowSettings);
+void Game::initWindow()
+{
+    /*Create a SFML window.*/
+    if (this->gfxSettings.fullscreen)
+        this->window = new sf::RenderWindow(this->gfxSettings.resolution, this->gfxSettings.title, sf::Style::Fullscreen, this->gfxSettings.contextSettings);
     else
-        this->window = new sf::RenderWindow(window_bounds, title, sf::Style::Titlebar | sf::Style::Close, windowSettings);
+        this->window = new sf::RenderWindow(this->gfxSettings.resolution, this->gfxSettings.title, sf::Style::Titlebar | sf::Style::Close, this->gfxSettings.contextSettings);
 
-
-    this->window->setFramerateLimit(framerate_limit);
-    this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+    this->window->setFramerateLimit(this->gfxSettings.frameRateLimit);
+    this->window->setVerticalSyncEnabled(this->gfxSettings.verticalSync);
 }
 
 void Game::initStates()
 {
-    this->states.push(new MainMenuState(this->window, &this->supportedKeys, &this->states));
+    this->states.push(new MainMenuState(this->window, this->gfxSettings, &this->supportedKeys, &this->states));
     //this->states.push(new GameState(this->window, &this->supportedKeys));
 }
 
@@ -83,7 +59,9 @@ void Game::initKeys()
 // Constructors/Destructors
 Game::Game()
 {   
-    this->initWinwow();
+    this->initVariables();
+    this->initGraphicsSettings();
+    this->initWindow();
     this->initKeys();
     this->initStates();
 }

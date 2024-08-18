@@ -5,11 +5,13 @@
 #include "EditorState.h"
 #include "Button.h"
 #include "SettingsState.h"
+#include "GraphiscSettings.h"
 
 class MainMenuState : public State
 {
 private:
 	// Variables
+	GraphicsSettings& gfxSettings;
 	sf::Texture backgroundTexture;
 	sf::RectangleShape background;
 	sf::Font font;
@@ -27,7 +29,7 @@ private:
 	void supportMousePosition(bool status, sf::RenderTarget* target);
 
 public:
-	MainMenuState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	MainMenuState(sf::RenderWindow* window, GraphicsSettings& gfxSettings, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
 	virtual ~MainMenuState();
 
 	//Functions
