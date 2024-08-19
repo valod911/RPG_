@@ -104,6 +104,26 @@ EditorState::~EditorState()
 }
 
 // Functions
+void EditorState::update(const float& dt)
+{
+	this->updateMousePosition();
+	this->updateKeytime(dt);
+	this->updateInput(dt);
+
+	if (!this->paused)//Unpaused
+	{
+		this->updateButtons();
+		this->updateGui();
+		this->updateEditorInput(dt);
+	}
+	else //Paused
+	{
+		this->pmenu->update(this->mousePosView);
+		this->updatePauseMenuButtons();
+	}
+
+	this->updateButtons();
+}
 
 void EditorState::updateInput(const float& dt)
 {
@@ -113,6 +133,20 @@ void EditorState::updateInput(const float& dt)
 			this->pauseState();
 		else
 			this->unpauseState();
+	}
+}
+
+void EditorState::updateEditorInput(const float& dt)
+{
+	//Add a tile to the tilemap
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->getKeytime())
+	{
+		this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+	}
+	//Remove a tile from the tilemap
+	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && this->getKeytime()) 
+	{
+		this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
 	}
 }
 
@@ -135,26 +169,6 @@ void EditorState::updatePauseMenuButtons()
 {
 	if (this->pmenu->isButtonPressed("QUIT"))
 		this->endState();
-}
-
-void EditorState::update(const float& dt)
-{
-	this->updateMousePosition();
-	this->updateKeytime(dt);
-	this->updateInput(dt);
-
-	if (!this->paused)//Unpaused
-	{
-		this->updateButtons();
-		this->updateGui();
-	}
-	else //Paused
-	{
-		this->pmenu->update(this->mousePosView);
-		this->updatePauseMenuButtons();
-	}
-
-	this->updateButtons();
 }
 
 void EditorState::renderButtons(sf::RenderTarget& target)
