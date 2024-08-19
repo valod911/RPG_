@@ -17,7 +17,9 @@ private:
 	// Objects
 	std::map<std::string, Button*> buttons;
 
-	TileMap map;
+	TileMap* tileMap;
+
+	sf::RectangleShape selectorRect;
 
 	//Functions
 	void initVariables();
@@ -26,19 +28,23 @@ private:
 	void initKeybinds();
 	void initPauseMenu();
 	void initButtons();
+	void initGui();
+	void initTileMap();
 
 	void supportMousePosition(bool status, sf::RenderTarget* target);
 
 public:
-	EditorState(sf::RenderWindow* winwow, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+	EditorState(StateData* state_data);
 	virtual ~EditorState();
 
 	//Functions
 	void updateInput(const float& dt);
 	void updateButtons();
+	void updateGui();
 	void updatePauseMenuButtons();
 	void update(const float& dt);
 	void renderButtons(sf::RenderTarget& target);
+	void renderGui(sf::RenderTarget& target);
 	void render(sf::RenderTarget* target = NULL);
 };
 
