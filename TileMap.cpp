@@ -8,6 +8,7 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height)
 	this->maxSize = sf::Vector2u(width, height);
 	this->layers = 1;
 	
+	// preparation vector for work
 	this->map.resize(this->maxSize.x, std::vector<std::vector <Tile*>>());
 	for (size_t x = 0; x < this->maxSize.x; x++)
 	{
@@ -20,7 +21,8 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height)
 			}
 		}
 	}
-	if (!this->tileTextureSheet.loadFromFile("Resources/Images/Tiles/grass1.png"))
+	// Load texture
+	if (!this->tileSheet.loadFromFile("Resources/Images/Tiles/tilesheet1.png"))
 		std::cout << "ERROR::TILEMAP::FAILED TO LOAD TILETEXTURESHEET." << "\n";
 }
 
@@ -38,10 +40,16 @@ TileMap::~TileMap()
 	}
 }
 
+
+
 //Initialization functions-----------------------
 //Accessors--------------------------------------
-//Functions--------------------------------------
+const sf::Texture* TileMap::getTileSheet() const
+{
+	return &this->tileSheet;
+}
 
+//Functions--------------------------------------
 void TileMap::update()
 {
 }
@@ -61,7 +69,7 @@ void TileMap::render(sf::RenderTarget& target)
 	}
 }
 
-void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z)
+void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z, const sf::IntRect& texture_rect)
 {
 	/* Take two incicies from the mouse position in the grid and add a tile to that position if the internal tilemap array allows it. */
 	if (x < this->maxSize.x && x >= 0 &&
@@ -71,7 +79,7 @@ void TileMap::addTile(const unsigned x, const unsigned y, const unsigned z)
 		if (this->map[x][y][z] == NULL)
 		{
 			/* OK to add tile*/
-			this->map[x][y][z] = new Tile(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, this->tileTextureSheet);
+			this->map[x][y][z] = new Tile(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, this->tileSheet, texture_rect);
 		}
 	}
 }
