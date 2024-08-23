@@ -79,24 +79,32 @@ public:
 class TextureSelector
 {
 private:
-	float gridSize;
-	bool active;
-	sf::RectangleShape bounds;
+	float gridSize; // size one tile from setting
+	bool active;	
+	bool hidden;	// will it be shown on screen
+	Button* hide_btn;
+	sf::RectangleShape bounds;	// Rect to bounds
 	sf::Sprite sheet;
-	sf::RectangleShape selector;
+	sf::RectangleShape selector;// Rect to selector
 	sf::Vector2u mousePosGrid;
 	sf::IntRect textureRect;
 
+	float keytime = 0;
+	const float keytimeMax;	
+
 public:
-	TextureSelector(float x, float y, float width, float height, float grid_size, const sf::Texture* texture_sheet);
+	TextureSelector(float x, float y, float width, float height, float grid_size, const sf::Texture* texture_sheet,
+		sf::Font& font, std::string text);
 	~TextureSelector();
 
 	//Accessors
 	const bool& getActive() const;
-
+	const sf::IntRect& getTextureRect() const;
+	const bool getKeytime();
 
 	//Functions
-	void update(const sf::Vector2i& mousePosWindow);
+	void updateKeytime(const float& dt);
+	void update(const sf::Vector2i& mousePosWindow, const float& dt);
 	void render(sf::RenderTarget& target);
 };
 #endif // !BUTTON_H
